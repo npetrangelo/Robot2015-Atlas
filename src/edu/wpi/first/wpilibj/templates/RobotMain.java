@@ -194,14 +194,18 @@ public class RobotMain extends IterativeRobot
 
         //
         //Branch based on mode
-        //Use driver's stick
-        if (driverstation.getDriveJoystick().buttonPressed(12))
+        //Use driver's stick        
+        Joystick467 joyLeft = driverstation.getDriveJoystick();
+        System.out.println("11 "+joyLeft.buttonDown(11));        
+        if (joyLeft.buttonDown(11))
         {
+            System.out.println("CALIBRATE");
             driverstation.println("Mode: Calibrate", 1);
             updateCalibrateControl();
         }
         else
         {
+            System.out.println("DRIVE");
             if (SINGLE_STICK_DRIVE)
             {
                 updateSingleStickControl();
@@ -284,6 +288,7 @@ public class RobotMain extends IterativeRobot
             drive.crabDrive(joyLeft.getStickAngle(), speed, false/*not field aligned*/);
         }
         
+        System.out.println(joyLeft.getFlap());
         //FIRE
         if (joyLeft.getFlap())
         {
@@ -315,7 +320,7 @@ public class RobotMain extends IterativeRobot
         }
 
         //sets arms down or up
-        if (joyLeft.getStickY() < -0.5)
+        if (joyLeft.buttonDown(1))//trigger is 1
         {
             feeder.lowerFeeder();
         }
