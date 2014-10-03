@@ -20,7 +20,6 @@ public class RobotMain extends IterativeRobot
 {
 
     //sets if cam is to ever be intialized and used
-
     private final boolean CAMERA_ENABLED = false;
 
     public static final boolean SINGLE_STICK_DRIVE = true;
@@ -30,12 +29,17 @@ public class RobotMain extends IterativeRobot
     private Drive drive;
 
     private static Feeder feeder;
-    //private Camera467 cam;
+    //private Camera467 cam;    
     private Launcher launcher;
     private boolean enabledOnce = false;
 
     private Compressor467 comp;
     private GearToothSensor gts;
+
+    private OpsDrive opsDrive;
+    private OpsGame opsGame;
+    private ButtonDrive buttonDrive;
+    private ButtonGame buttonGame;
     //private LEDring LED;
 
     /**
@@ -51,9 +55,13 @@ public class RobotMain extends IterativeRobot
         drive = Drive.getInstance();
         comp = Compressor467.getInstance();
         launcher = Launcher.getInstance();
+        buttonDrive = ButtonDrive.getInstance();
         //cam = Camera467.getInstance();
         gts = new GearToothSensor(4, RobotMap.WHEEL_CIRCUMFRENCE, RobotMap.TICKS_PER_WHEEL);
-
+        opsGame = OpsGame.getInstance();
+        opsDrive = OpsDrive.getInstance();
+        buttonDrive = ButtonDrive.getInstance();
+        buttonGame = ButtonGame.getInstance();
         //SpeedCalibration.init();
         //LED = LEDring.getInstance();
         // static static static static static
@@ -189,6 +197,7 @@ public class RobotMain extends IterativeRobot
     {
         //Read driverstation inputs
         driverstation.readInputs();
+
         driverstation.clearPrint();
         comp.update();
 
@@ -196,8 +205,10 @@ public class RobotMain extends IterativeRobot
         //Branch based on mode
         //Use driver's stick        
         Joystick467 joyLeft = driverstation.getDriveJoystick();
-        System.out.println("11 "+joyLeft.buttonDown(11));        
-        if (joyLeft.buttonDown(11))
+        buttonDrive.updateButtons(joyLeft);
+        buttonGame.updateButtons(joyLeft);
+        
+        if (buttonDrive.getCalibrate())
         {
             System.out.println("CALIBRATE");
             driverstation.println("Mode: Calibrate", 1);
@@ -208,7 +219,7 @@ public class RobotMain extends IterativeRobot
             System.out.println("DRIVE");
             if (SINGLE_STICK_DRIVE)
             {
-                updateSingleStickControl();
+                updateSingleStickControlNew();
             }
             else
             {
@@ -222,7 +233,79 @@ public class RobotMain extends IterativeRobot
         //Send printed data to driverstation
         driverstation.sendData();
     }
-    
+
+    private void updateSingleStickControlNew()
+    {
+        
+        ///
+        ///Update Drive
+        ///
+        
+        
+        //priority for each state is intentional, not bug
+        if(buttonDrive.getTurnInPlace())
+        {
+            opsDrive.turnInPlace();
+        }
+        else if(buttonDrive.getCarDrive())
+        {
+            opsDrive.carDrive();
+        }
+        else if(buttonDrive.getCrabDriveFA())
+        {
+            opsDrive.swerveDriveFAlign();
+        }
+        else if(buttonDrive.getCrabDriveNoFA())
+        {
+            opsDrive.swerveDriveNoFAlign();
+        }
+        else//should never enter here
+        {
+            System.err.println("Button State not calculated correctly");
+            opsDrive.swerveDriveNoFAlign();
+        }
+        
+        ///
+        ///Update Game Pieces
+        ///
+        
+        //fire launcher
+        if(buttonGame.getFire())
+        {
+            opsGame.fire();
+        }
+        else
+        {
+            opsGame.pullBack();
+        }
+        
+        //feed deployed or retracted
+        if(buttonGame.getFeedDeployed())
+        {
+            opsGame.feedDeploy();
+        }
+        else
+        {
+            opsGame.feedRetract();
+        }
+        
+        //feeder pull in, out, or stop spinning
+        //technically feedIn will override feedOut, 
+        //however impossible to be both so it doesn't matter
+        if(buttonGame.getFeedIn())
+        {
+            opsGame.feedIn();
+        }
+        else if(buttonGame.getFeedOut())
+        {
+            opsGame.feedOut();
+        }
+        else
+        {
+            opsGame.feedHalt();
+        }
+    }
+
     /**
      * Update the control with a single stick
      */
@@ -287,7 +370,7 @@ public class RobotMain extends IterativeRobot
             //Normally use crab drive
             drive.crabDrive(joyLeft.getStickAngle(), speed, false/*not field aligned*/);
         }
-        
+
         System.out.println(joyLeft.getFlap());
         //FIRE
         if (joyLeft.getFlap())
