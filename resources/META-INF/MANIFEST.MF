@@ -1,4 +1,4 @@
-MIDlet-Name: Robot2012
+MIDlet-Name: Robot2015-Atlas
 MIDlet-Version: 1.0.0
 MIDlet-Vendor: FIRST
 MIDlet-1: RobotMain, , edu.wpi.first.wpilibj.templates.RobotMain
