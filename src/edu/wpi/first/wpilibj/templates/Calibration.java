@@ -5,16 +5,21 @@
 package edu.wpi.first.wpilibj.templates;
 
 /**
- * @author Team467 This class contains only static variables and
- * functions, and simply acts as a container for all the calibration code.
+ * @author Team467 This class contains only static variables and functions, and
+ * simply acts as a container for all the calibration code.
  */
 public class Calibration
 {
+
     //Creates objects
+
     private static Drive drive;
     private static DataStorage data;
     private static Driverstation driverstation;
     
+    private static ButtonCalibrate buttonCalibrate;
+    private static OpsCalibrate opsCalibrate;
+
     //Incremented angle used for calibrating wheels
     private static double calibrationAngle = 0.0;
 
@@ -27,6 +32,8 @@ public class Calibration
         drive = Drive.getInstance();
         data = DataStorage.getInstance();
         driverstation = Driverstation.getInstance();
+        buttonCalibrate = ButtonCalibrate.getInstance();
+        opsCalibrate = OpsCalibrate.getInstance();
     }
 
     /**
@@ -34,21 +41,10 @@ public class Calibration
      *
      * @param motorId The id of the motor to calibrate
      */
-    public static void updateSteeringCalibrate(int motorId)
+    public static void updateSteeringCalibrate(int motorId, Joystick467 joy)
     {
-        Joystick467 joy = driverstation.getDriveJoystick();
+        calibrationAngle = opsCalibrate.getCalibrationAngle(joy, calibrationAngle);
         
-        double rateMultiplier = 1;
-        
-        // If button 4 on left joystick is pressed, slow down wheel calibration.
-        if (joy.buttonDown(4)) {
-            rateMultiplier = 0.4; // run at 40% speed.
-        }
-        
-        //Drive motor based on twist angle
-        //Increase wheel angle by a small amount based on joystick twist
-        calibrationAngle += (joy.getTwist() / 100.0) * rateMultiplier;
-
         if (calibrationAngle > 1.0)
         {
             calibrationAngle -= 2.0;
@@ -62,7 +58,7 @@ public class Calibration
         drive.individualSteeringDrive(calibrationAngle, 0, motorId);
 
         //Write and set new center if trigger is pressed
-        if (joy.buttonPressed(Joystick467.TRIGGER))
+        if (buttonCalibrate.getConfirmSelection())
         {
             double currentAngle = drive.getSteeringAngle(motorId);
 

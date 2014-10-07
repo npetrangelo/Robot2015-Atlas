@@ -35,14 +35,14 @@ public class ButtonGame
     /**
      * Update the value of the buttons. Must be called <b>every</b> loop.
      *
-     * @param joyLeft
+     * @param joy
      */
-    public void updateButtons(Joystick467 joyLeft)
+    public void updateButtons(Joystick467 joy)
     {
-        feedIn = (joyLeft.getHatY() > 0.5);
-        feedOut = (joyLeft.getHatY() < -0.5);
-        fire = joyLeft.getFlap();
-        feederDeployed = joyLeft.buttonDown(Joystick467.TRIGGER);
+        feedIn = (joy.getHatY() > 0.5);
+        feedOut = (joy.getHatY() < -0.5);
+        fire = joy.getFlap();
+        feederDeployed = joy.buttonDown(Joystick467.TRIGGER);
     }
     
     public boolean getFire()
