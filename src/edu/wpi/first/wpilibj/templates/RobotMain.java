@@ -22,7 +22,7 @@ public class RobotMain extends IterativeRobot
     //sets if cam is to ever be intialized and used
     private final boolean CAMERA_ENABLED = false;
 
-    public static final boolean SINGLE_STICK_DRIVE = true;
+    public static final boolean SINGLE_STICK_DRIVE = false;
 
     //Robot objects
     private Driverstation driverstation;
@@ -229,6 +229,7 @@ public class RobotMain extends IterativeRobot
                 buttonDrive.updateButtons(joyLeft);
                 buttonGame.updateButtons(joyRight);
             }
+            //operates using the updated buttons
             updateDriveAndNavigate();
         }
 
@@ -268,9 +269,9 @@ public class RobotMain extends IterativeRobot
         ///
         ///Update Game Pieces
         ///
-        //fire launcher
+        //fire launcher        
         if (buttonGame.getFire())
-        {
+        {            
             opsGame.fire();
         }
         else
@@ -290,7 +291,7 @@ public class RobotMain extends IterativeRobot
 
         //feeder pull in, out, or stop spinning
         //technically feedIn will override feedOut, 
-        //however impossible to be both so it doesn't matter
+        //however impossible to be both so it doesn't matter        
         if (buttonGame.getFeedIn())
         {
             opsGame.feedIn();

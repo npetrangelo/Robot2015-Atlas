@@ -39,10 +39,11 @@ public class ButtonGame
      */
     public void updateButtons(Joystick467 joy)
     {
-        feedIn = (joy.getHatY() > 0.5);
-        feedOut = (joy.getHatY() < -0.5);
+        feedOut = (joy.getHatY() > 0.5);
+        feedIn = (joy.getHatY() < -0.5);
         fire = joy.getFlap();
-        feederDeployed = joy.buttonDown(Joystick467.TRIGGER);
+        feederDeployed = joy.getStickY() < -0.5;
+//        System.out.println("Fire " + fire + " FeedIn " + feedIn + " FeedOut " + feedOut + " FeederDep " + feederDeployed);
     }
     
     public boolean getFire()

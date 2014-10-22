@@ -15,7 +15,7 @@ public class Driverstation
     //Singleton instance variable
     private static Driverstation instance;
 
-    private static boolean NAVIGATOR_CONTROLLER_IS_GUITAR = true;
+    private static boolean NAVIGATOR_CONTROLLER_IS_GUITAR = false;
 
     //Driverstation objects
     private DriverStation driverstation;
