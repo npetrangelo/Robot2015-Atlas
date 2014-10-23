@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.wpi.first.wpilibj.templates;
+package org.usfirst.frc.team467;
 
 /**
  *
@@ -52,7 +52,7 @@ public class ButtonDrive
      */
     public void updateButtons(Joystick467 joyLeft)
     {
-        calibrate = joyLeft.buttonDown(11);
+        calibrate = joyLeft.getFlap();
         carDrive = joyLeft.buttonDown(3);
         crabDriveFA = joyLeft.buttonDown(5);        
         turnInPlace = joyLeft.buttonDown(2);
