@@ -95,7 +95,7 @@ public class RobotMain extends IterativeRobot
      */
     public void teleopInit()
     {
-        enabledOnce = true;        
+        enabledOnce = true;
         comp = Compressor467.getInstance();
     }
 
@@ -213,6 +213,8 @@ public class RobotMain extends IterativeRobot
             System.out.println("CALIBRATE");
             driverstation.println("Mode: Calibrate", 1);
             buttonCalibrate.updateButtons(joyLeft);
+            buttonDrive.updateButtons(joyLeft);
+            buttonGame.updateButtons(joyRight);
             updateCalibrateControl(joyLeft);
         }
         else//drive mode, not calibrate
@@ -224,7 +226,7 @@ public class RobotMain extends IterativeRobot
                 buttonGame.updateButtons(joyLeft);
             }
             else
-            {
+            {                
                 driverstation.println("Mode: Drive Dual Stick", 1);
                 buttonDrive.updateButtons(joyLeft);
                 buttonGame.updateButtons(joyRight);
@@ -260,6 +262,11 @@ public class RobotMain extends IterativeRobot
         {
             opsDrive.swerveDriveNoFAlign();
         }
+        else if (buttonDrive.getHybridDrive())
+        {
+            System.out.println("HD D");
+            opsDrive.hybridDrive();
+        }
         else//should never enter here
         {
             System.err.println("Button State not calculated correctly");
@@ -271,7 +278,7 @@ public class RobotMain extends IterativeRobot
         ///
         //fire launcher        
         if (buttonGame.getFire())
-        {            
+        {
             opsGame.fire();
         }
         else
@@ -311,7 +318,7 @@ public class RobotMain extends IterativeRobot
      */
     private void updateCalibrateControl(Joystick467 joy)
     {
-        opsCalibrate.getWheel(joy, calibrateWheelSelect);
+        calibrateWheelSelect = opsCalibrate.getWheel(joy, calibrateWheelSelect);
 
         //Prints selected motor to the driverstation
         printSelectedMotor(calibrateWheelSelect);
@@ -344,7 +351,7 @@ public class RobotMain extends IterativeRobot
                 break;
         }
     }
-    
+
 //<editor-fold defaultstate="collapsed" desc="SingleStickOld">
     /**
      * Update the control with a single stick
@@ -354,7 +361,7 @@ public class RobotMain extends IterativeRobot
         //Speed to drive at (negative speeds drive backwards)
         double speed;
         Joystick467 joyLeft = driverstation.getDriveJoystick();
-        
+
         //Set speed
         if (joyLeft.buttonDown(2))//TURN IN PLACE
         {
@@ -371,7 +378,7 @@ public class RobotMain extends IterativeRobot
             // Speed for crab drive, field aligned or otherwise.
             speed = joyLeft.getStickDistance();
         }
-        
+
         // Speed modifiers
         if (joyLeft.buttonDown(Joystick467.TRIGGER))//CREEP
         {
@@ -383,11 +390,11 @@ public class RobotMain extends IterativeRobot
             // Turbo on button 7
             speed *= 2.0;
         }
-        
+
         SmartDashboard.putNumber("Speed", speed);
         //SmartDashboard.putNumber("Current Angle", gyro.getAngle());
         SmartDashboard.putNumber("Battery Usage", driverstation.getBatteryVoltage());
-        
+
         //Decide drive mode
         if (joyLeft.buttonDown(2))//TURN DRIVE
         {
@@ -410,7 +417,7 @@ public class RobotMain extends IterativeRobot
             //Normally use crab drive
             drive.crabDrive(joyLeft.getStickAngle(), speed, false/*not field aligned*/);
         }
-        
+
         System.out.println(joyLeft.getFlap());
         //FIRE
         if (joyLeft.getFlap())
@@ -423,7 +430,7 @@ public class RobotMain extends IterativeRobot
             launcher.pullBackLauncher();
             System.out.println("Pull back launcher");
         }
-        
+
         //hat stick is backward
         if (joyLeft.getHatY() < -0.5)
         {
@@ -441,7 +448,7 @@ public class RobotMain extends IterativeRobot
             //dont feed
             feeder.driveFeederMotor(0);
         }
-        
+
         //sets arms down or up
         if (joyLeft.buttonDown(1))//trigger is 1
         {

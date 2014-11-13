@@ -48,21 +48,25 @@ public class ButtonGame
     
     public boolean getFire()
     {
-        return fire;
+        return false;
+//        return fire;
     }
     
     public boolean getFeedIn()
     {
-        return feedIn;
+        return false;
+//        return feedIn;
     }
     
     public boolean getFeedOut()
     {
-        return feedOut;
+        return false;
+//        return feedOut;
     }    
     
     public boolean getFeedDeployed()
     {
-        return feederDeployed;
+        return false;
+//        return feederDeployed;
     }
 }

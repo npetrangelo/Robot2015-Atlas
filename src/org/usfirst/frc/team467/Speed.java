@@ -30,7 +30,12 @@ public class Speed
     {
         this.joyLeft = Driverstation.getInstance().getDriveJoystick();
         buttonState = ButtonDrive.getInstance();
-    }        
+    }   
+    
+    public double getHybridDriveSpeed()
+    {
+        return -calcMultiplier(joyLeft.getStickDistance());
+    }
 
     public double getCarDriveSpeed()
     {

@@ -71,5 +71,13 @@ public class OpsDrive
     public void turnInPlace()
     {
         drive.turnDrive(speed.getTurnInPlaceSpeed());
-    }        
+    } 
+    
+    /**
+     * Hybrid Drive
+     */
+    public void hybridDrive()
+    {                
+        drive.hybridDrive(joyLeft.getTwist(), joyLeft.getStickAngle(), speed.getHybridDriveSpeed());
+    }
 }

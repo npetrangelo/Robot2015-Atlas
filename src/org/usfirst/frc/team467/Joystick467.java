@@ -86,8 +86,10 @@ public class Joystick467
      */
     public boolean buttonDown(int button)
     {
-        return buttons[button - 1] && prevButtons[button - 1];
+//        return buttons[button - 1] && prevButtons[button - 1];
+        return joystick.getRawButton(button);
     }
+        
 
     /**
      * Check if a specific button has just been pressed. (Ignores holding.)
