@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.*;
  */
 public class Drive extends RobotDrive
 {
-
+    GyroAnalog467 gyro;
     //Single instance of this class
     private static Drive instance = null;
 
@@ -77,6 +77,8 @@ public class Drive extends RobotDrive
         //BR = Math.PI/2 - diagonalAngle;
         //Make steering array
         steering = new Steering[4];
+        
+        gyro = GyroAnalog467.getInstance();
 
         //Make all steering objects
         for (int i = 0; i < steering.length; i++)
@@ -325,7 +327,7 @@ public class Drive extends RobotDrive
      */
     public void crabDrive(double angle, double speed, boolean fieldAlign)
     {
-        double gyroAngle = 0;//gyro.getAngle();
+        double gyroAngle = gyro.getAngle();//gyro.getAngle();
 
         //Calculate the wheel angle necessary to drive in the required direction.
         double steeringAngle = (fieldAlign) ? angle - gyroAngle : angle;
