@@ -13,6 +13,8 @@ public class ButtonCalibrate
 {
     private static ButtonCalibrate buttonGame = null;
 
+    private boolean calibrate = false;
+    
     private boolean confirmSelection = false;    
     private boolean slowTurn = false;    
 
@@ -29,6 +31,11 @@ public class ButtonCalibrate
     {
     }
     
+    public boolean getCalibrate()
+    {
+        return calibrate;
+    }
+    
     public boolean getConfirmSelection()
     {
         return confirmSelection;
@@ -41,6 +48,7 @@ public class ButtonCalibrate
     
     public void updateButtons(Joystick467 joy)
     {
+        calibrate = joy.getFlap();
         confirmSelection = joy.buttonDown(Joystick467.TRIGGER);
         slowTurn = joy.buttonDown(4);
     }

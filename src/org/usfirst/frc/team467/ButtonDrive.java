@@ -14,8 +14,7 @@ public class ButtonDrive
 
     private static ButtonDrive buttonDrive = null;
 
-    //bools
-    private boolean calibrate = false;
+    //bools    
     private boolean carDrive = false;
     private boolean crabDriveFA = false;
     private boolean crabDriveNoFA = false;    
@@ -52,8 +51,7 @@ public class ButtonDrive
      * @param joyLeft 
      */
     public void updateButtons(Joystick467 joyLeft)
-    {
-        calibrate = joyLeft.getFlap();
+    {        
         carDrive = joyLeft.buttonDown(3);         
         hybridDrive = joyLeft.buttonDown(4);
         crabDriveFA = joyLeft.buttonDown(5);        
@@ -83,11 +81,7 @@ public class ButtonDrive
     {
         return turbo;
     }
-    
-    public boolean getCalibrate()
-    {
-        return calibrate;
-    }
+        
     
     public boolean getCarDrive()
     {

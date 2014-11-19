@@ -191,6 +191,7 @@ public class RobotMain extends IterativeRobot
 
     //this is a persistant variable to select the wheel to calibrate.
     int calibrateWheelSelect = 0;
+    boolean calibrateDebounce = false;
 
     /**
      * This function is called periodically during operator control
@@ -208,32 +209,44 @@ public class RobotMain extends IterativeRobot
         Joystick467 joyLeft = driverstation.getDriveJoystick();
         Joystick467 joyRight = driverstation.getNavJoystick();
 
-        if (buttonDrive.getCalibrate())
+        //updates the buttons
+        if (SINGLE_STICK_DRIVE)
         {
+            driverstation.println("Mode: Drive Single Stick", 1);
+            buttonDrive.updateButtons(joyLeft);
+            buttonGame.updateButtons(joyLeft);
+            buttonCalibrate.updateButtons(joyLeft);
+        }
+        else
+        {
+            driverstation.println("Mode: Drive Dual Stick", 1);
+            buttonDrive.updateButtons(joyLeft);
+            buttonGame.updateButtons(joyRight);
+            buttonCalibrate.updateButtons(joyLeft);
+        }
+
+        if (buttonCalibrate.getCalibrate())
+        {
+            if (!calibrateDebounce)//first time entering calibrate
+            {
+                drive.disableSteeringPID();
+            }
             System.out.println("CALIBRATE");
             driverstation.println("Mode: Calibrate", 1);
-            buttonCalibrate.updateButtons(joyLeft);
             buttonDrive.updateButtons(joyLeft);
             buttonGame.updateButtons(joyRight);
             updateCalibrateControl(joyLeft);
         }
         else//drive mode, not calibrate
         {
-            if (SINGLE_STICK_DRIVE)
+            if (calibrateDebounce)//first time entering calibrate
             {
-                driverstation.println("Mode: Drive Single Stick", 1);
-                buttonDrive.updateButtons(joyLeft);
-                buttonGame.updateButtons(joyLeft);
-            }
-            else
-            {                
-                driverstation.println("Mode: Drive Dual Stick", 1);
-                buttonDrive.updateButtons(joyLeft);
-                buttonGame.updateButtons(joyRight);
+                drive.enableSteeringPID();
             }
             //operates using the updated buttons
             updateDriveAndNavigate();
         }
+        calibrateDebounce = buttonCalibrate.getCalibrate();
 
         //Send printed data to driverstation
         driverstation.sendData();

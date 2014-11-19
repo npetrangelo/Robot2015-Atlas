@@ -115,6 +115,28 @@ public class Drive extends RobotDrive
 
         return instance;
     }
+    
+    /**
+     * Turns on the PID for all wheels.
+     */
+    public void enableSteeringPID()
+    {
+        for(int i = 0; i < steering.length ; i++)
+        {
+            steering[i].enablePID();
+        }
+    }
+    
+    /**
+     * Turns off the PID for all wheels.
+     */
+    public void disableSteeringPID()
+    {
+        for(int i = 0; i < steering.length ; i++)
+        {
+            steering[i].disablePID();
+        }
+    }
 
     /**
      * Drives each of the four wheels at different speeds using invert constants

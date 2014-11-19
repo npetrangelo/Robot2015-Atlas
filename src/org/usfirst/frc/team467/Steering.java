@@ -79,6 +79,22 @@ public class Steering
         return RobotMap.STEERING_RANGE - steeringSensor.getAverageValue();
         // return steeringSensor.getAverageValue();
     }
+    
+    /**
+     * Enables the PID for the steering.
+     */
+    public void enablePID()
+    {
+        steeringPID.enable();
+    }
+    
+    /**
+     * Disables the PID for the steering.
+     */
+    public void disablePID()
+    {
+        steeringPID.disable();
+    }
 
     /**
      * @return - setpoint of the PID controller
