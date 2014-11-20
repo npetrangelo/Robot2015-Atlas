@@ -54,8 +54,8 @@ public class Calibration
             calibrationAngle += 2.0;
         }
 
-        //Drive specified steering motor with no speed to allow only steering
-        drive.individualSteeringDrive(calibrationAngle, 0, motorId);
+        //Drive specified steering motor with no speed to allow only steering        
+//        drive.individualSteeringDrive(calibrationAngle, 0, motorId);
 
         //Write and set new center if trigger is pressed
         if (buttonCalibrate.getConfirmSelection())

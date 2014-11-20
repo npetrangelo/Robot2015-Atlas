@@ -50,6 +50,7 @@ public class Steering
     {
         // Make steering motor
         steeringMotor = new Talon(motor);        
+        
 
         // Make steering sensor
         steeringSensor = new AnalogChannel(sensor);
@@ -94,6 +95,7 @@ public class Steering
     public void disablePID()
     {
         steeringPID.disable();
+        steeringMotor.set(0.0);
     }
 
     /**

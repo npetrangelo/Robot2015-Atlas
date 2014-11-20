@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.*;
  */
 public class Drive extends RobotDrive
 {
-    GyroAnalog467 gyro;
+//    GyroAnalog467 gyro;
     //Single instance of this class
     private static Drive instance = null;
 
@@ -78,7 +78,7 @@ public class Drive extends RobotDrive
         //Make steering array
         steering = new Steering[4];
         
-        gyro = GyroAnalog467.getInstance();
+//        gyro = GyroAnalog467.getInstance();
 
         //Make all steering objects
         for (int i = 0; i < steering.length; i++)
@@ -137,6 +137,7 @@ public class Drive extends RobotDrive
         for(int i = 0; i < steering.length ; i++)
         {
             steering[i].disablePID();
+            
         }
     }
 
@@ -210,7 +211,7 @@ public class Drive extends RobotDrive
         frp = steering[RobotMap.FRONT_RIGHT].getSensorValue();
         blp = steering[RobotMap.BACK_LEFT].getSensorValue();
         brp = steering[RobotMap.BACK_RIGHT].getSensorValue();
-        System.out.println("FL: " + fla / RobotMap.STEERING_RANGE + " FR: " + fra / RobotMap.STEERING_RANGE + " BL: " + bla / RobotMap.STEERING_RANGE + " BR: " + bra / RobotMap.STEERING_RANGE);
+//        System.out.println("FL: " + fla / RobotMap.STEERING_RANGE + " FR: " + fra / RobotMap.STEERING_RANGE + " BL: " + bla / RobotMap.STEERING_RANGE + " BR: " + bra / RobotMap.STEERING_RANGE);
     }
 
     /**
@@ -327,7 +328,7 @@ public class Drive extends RobotDrive
      */
     public void crabDrive(double angle, double speed, boolean fieldAlign)
     {
-        double gyroAngle = gyro.getAngle();//gyro.getAngle();
+        double gyroAngle = 0;//gyro.getAngle();//gyro.getAngle();
 
         //Calculate the wheel angle necessary to drive in the required direction.
         double steeringAngle = (fieldAlign) ? angle - gyroAngle : angle;
